@@ -1,0 +1,7 @@
+../src/SENSOR_Driver/sensoragua.cpp:4:1:WaterLevelSensor::WaterLevelSensor(uint32_t, uint32_t, uint32_t)	24	static
+../src/SENSOR_Driver/sensoragua.cpp:8:6:void WaterLevelSensor::init()	16	static
+../src/SENSOR_Driver/sensoragua.cpp:13:10:uint32_t WaterLevelSensor::readRawValue()	16	static
+../src/SENSOR_Driver/sensoragua.cpp:19:6:bool WaterLevelSensor::isFull()	24	static
+../src/SENSOR_Driver/sensoragua.cpp:25:6:bool WaterLevelSensor::isEmpty()	24	static
+../src/SENSOR_Driver/sensoragua.cpp:31:10:uint32_t WaterLevelSensor::getWaterLevel()	24	static
+../src/SENSOR_Driver/sensoragua.cpp:41:6:void WaterLevelSensor::disable()	16	static

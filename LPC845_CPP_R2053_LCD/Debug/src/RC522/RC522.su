@@ -1,0 +1,31 @@
+../src/RC522/RC522.cpp:31:6:void leerYEnviarRFID()	72	static
+../src/RC522/RC522.cpp:72:6:void showSerialNumber()	72	static
+../src/RC522/RC522.cpp:119:6:void setup()	8	static
+../src/RC522/RC522.cpp:131:6:void MFRC522_Init()	8	static
+../src/RC522/RC522.cpp:152:6:void MFRC522_Reset()	8	static
+../src/RC522/RC522.cpp:160:6:void AntennaOn()	24	static
+../src/RC522/RC522.cpp:173:6:void SetBitMask(uint8_t, uint8_t)	32	static
+../src/RC522/RC522.cpp:183:6:void ClearBitMask(uint8_t, uint8_t)	32	static
+../src/RC522/RC522.cpp:193:6:void Write_MFRC522(uint8_t, uint8_t)	16	static
+../src/RC522/RC522.cpp:205:9:uint8_t Read_MFRC522(uint8_t)	32	static
+../src/RC522/RC522.cpp:222:6:void delay1s()	8	static
+../src/RC522/RC522.cpp:231:9:uint8_t MFRC522_Anticoll(uint8_t*)	40	static
+../src/RC522/RC522.cpp:267:9:uint8_t MFRC522_ToCard(uint8_t, uint8_t*, uint8_t, uint8_t*, uint32_t*)	48	static
+../src/RC522/RC522.cpp:364:6:void MFRC522_Halt()	40	static
+../src/RC522/RC522.cpp:383:6:void CalulateCRC(uint8_t*, uint8_t, uint8_t*)	40	static
+../src/RC522/RC522.cpp:415:9:uint8_t MFRC522_Request(uint8_t, uint8_t*)	40	static
+../src/RC522/RC522.cpp:431:6:void beepOkWrite()	8	static
+../src/RC522/RC522.cpp:437:6:void beepOk()	8	static
+../src/RC522/RC522.cpp:442:6:void beepNok()	8	static
+../src/RC522/RC522.cpp:451:8:int8_t writeTagBlockMemory()	96	static
+../src/RC522/RC522.cpp:668:9:uint8_t MFRC522_SelectTag(uint8_t*)	64	static
+../src/RC522/RC522.cpp:698:6:void writeTagBlockData(int32_t, uint8_t*)	56	static
+../src/RC522/RC522.cpp:717:9:uint8_t MFRC522_Auth(uint8_t, uint8_t, uint8_t*, uint8_t*)	64	static
+../src/RC522/RC522.cpp:747:9:uint8_t MFRC522_Write(uint8_t, uint8_t*)	72	static
+../src/RC522/RC522.cpp:780:9:uint8_t MFRC522_Read(uint8_t, uint8_t*)	40	static
+../src/RC522/RC522.cpp:798:6:void readDataHEX()	56	static
+../src/RC522/RC522.cpp:929:6:void readDataASCII()	96	static
+../src/RC522/RC522.cpp:980:8:int8_t readDataASCIIsectorBlock(uint8_t, uint8_t, uint8_t)	96	static
+../src/RC522/RC522.cpp:1031:6:void sendToSerialASCII(int32_t, int32_t, uint8_t, uint8_t*)	64	static
+../src/RC522/RC522.cpp:1052:6:void sendToSerialHEX(int32_t, uint8_t, uint8_t*)	200	static
+../src/RC522/RC522.cpp:1068:6:void InitRC522()	8	static

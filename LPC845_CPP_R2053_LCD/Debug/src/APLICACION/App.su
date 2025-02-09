@@ -1,0 +1,10 @@
+../src/APLICACION/App.cpp:33:9:uint8_t App()	24	static
+../src/APLICACION/App.cpp:48:6:void prueba()	48	static
+../src/APLICACION/App.cpp:55:6:void MdeE()	8	static
+../src/APLICACION/App.cpp:61:6:void analisisdeTramas(uint8_t)	16	static
+../src/APLICACION/App.cpp:66:6:void Inicializacion()	8	static
+../src/APLICACION/App.cpp:84:9:uint8_t LeerBufferRX()	16	static
+../src/APLICACION/App.cpp:96:6:void AnalizarTramaConexion(uint8_t)	16	static
+../src/APLICACION/App.cpp:124:6:void AnalizarTramaUart0(uint8_t)	16	static
+../src/APLICACION/App.cpp:188:1:void __static_initialization_and_destruction_0()	8	static
+../src/APLICACION/App.cpp:188:1:cpp)	8	static

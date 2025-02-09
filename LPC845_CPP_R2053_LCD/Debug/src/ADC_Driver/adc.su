@@ -1,0 +1,7 @@
+../src/ADC_Driver/adc.cpp:24:6:void ADC_Inicializar()	8	static
+../src/ADC_Driver/adc.cpp:66:6:void ADC_Start()	8	static
+../src/ADC_Driver/adc.cpp:70:6:void ADC_Disparo(uint32_t)	16	static
+../src/ADC_Driver/adc.cpp:82:6:void ADC_SEQA_IRQHandler()	24	static
+../src/ADC_Driver/adc.cpp:108:10:uint32_t ADC_ReadChannel(uint32_t)	16	static
+../src/ADC_Driver/adc.cpp:113:1:void __static_initialization_and_destruction_0()	8	static
+../src/ADC_Driver/adc.cpp:113:1:cpp)	8	static

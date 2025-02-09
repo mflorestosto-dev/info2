@@ -1,0 +1,5 @@
+../src/MDE/MDE.cpp:38:6:void MdE_Valvulas()	8	static
+../src/MDE/MDE.cpp:101:6:void CerrarTodasValvulas()	8	static
+../src/MDE/MDE.cpp:112:6:void MdE_Motor()	8	static
+../src/MDE/MDE.cpp:190:6:void finalizarTimerMotor()	8	static
+../src/MDE/MDE.cpp:198:6:void MdE_ESP32()	64	static
