@@ -35,6 +35,9 @@
 #define ON								1
 #define OFF								0
 
+#define ON_VALV							0
+#define OFF_VALV						1
+
 #define LLENO							5160
 #define VACIO							500
 
@@ -63,6 +66,7 @@ void IniciarMotor(uint32_t tiempo, void (*callback)(void));
 void CambiarEstadoMotor(void);
 void MdE_Motor(void);
 void finalizarTimerMotor(void);
+void finalizarTimerValvulas(void);
 
 void MdE_ESP32(void);
 

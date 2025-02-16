@@ -13,7 +13,6 @@
 
 //Definiciones de pines
 Gpio valvCarga		(0, 13, OUT);
-Gpio valvSuavizante	(0, 14, OUT);
 Gpio valvDesagote	(0, 15, OUT);
 GPIOPWM Motor		(0, 18, 10);
 Gpio giroDerecha	(0, 19, OUT);
@@ -41,6 +40,9 @@ bool flag_lavadoRapido 		= false;
 bool flag_soloCentrifugado 	= false;
 bool flag_conexionExitosa 	= false;
 bool flag_tramaRecibida 	= 0; // Bandera para saber si se recibió una trama válida
+bool paradaEmergencia		= 0;
+bool ValvulasTerminadas		= 0;
+bool MotorTerminado			= 0;
 char modoLavadoSeleccionado = 0;         // Guardará el modo de lavado ('R', 'N', 'C')
 
 int main(void) {

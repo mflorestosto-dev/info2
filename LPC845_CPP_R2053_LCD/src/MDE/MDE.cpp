@@ -2,7 +2,6 @@
 
 extern WaterLevelSensor waterSensor;// Sensor de nivel de agua declarado externamente
 extern Gpio 			valvCarga;
-extern Gpio 			valvSuavizante;
 extern Gpio 			valvDesagote;
 extern GPIOPWM 			Motor;
 extern Gpio 			giroDerecha;
@@ -10,7 +9,7 @@ extern Gpio 			giroIzquierda;
 extern Gpio 			nivelAgua;
 extern Gpio				ledVerde;
 extern Gpio 			ledRojo;
-extern TIMERSW 			timerValvula;         // Temporizador para controlar tiempo de llenado
+extern TIMERSW 			timerValvulas;         // Temporizador para controlar tiempo de llenado
 extern TIMERSW 			timerMotor;
 
 extern bool 			flag_lavadoRapido;
@@ -18,6 +17,9 @@ extern bool 			flag_lavadoCompleto;
 extern bool 			flag_soloCentrifugado;
 extern bool				flag_tramaRecibida;
 extern bool 			flag_conexionExitosa;
+extern bool 			ValvulasTerminadas;
+extern bool				MotorTerminado;
+extern bool 			paradaEmergencia;
 uint8_t 				estadoValvulas			= 0;
 uint8_t 				estadoMotor 			= 0;
 uint8_t					estadoESP32				= 0;
@@ -38,73 +40,86 @@ char ipRed[]	 = "";
 void MdE_Valvulas(void) {
     switch (estadoValvulas) {
         case 0: // Estado inicial: Verificar flags de lavado
+            if (paradaEmergencia == 1) {
+                estadoValvulas = 0;
+                CerrarTodasValvulas();
+            }
             if (flag_lavadoCompleto == ON || flag_lavadoRapido == ON) {
-                valvCarga.Set(ON); // Activar válvula de llenado
+                valvCarga.Set(ON); // Activar válvula de carga
+                timerValvulas.Start(10000, 0, finalizarTimerValvulas);
                 estadoValvulas = 1; // Pasar al estado de llenado
             }
             break;
 
-        case 1: // Estado de llenado: Sensor detecta nivel lleno
-            if (waterSensor.isFull()) { // Si el nivel está lleno
-                valvCarga.Set(OFF); // Cerrar válvula de llenado
+        case 1: // Estado de llenado
+            if (paradaEmergencia == 1) {
+                estadoValvulas = 0;
+                CerrarTodasValvulas();
+            }
+            if (waterSensor.isFull() || flag_timerValvula == 1) { // Nivel lleno o tiempo excedido
+                valvCarga.Set(OFF); // Cerrar válvula de carga
+                flag_timerValvula = 0;
                 estadoValvulas = 2; // Pasar al estado de espera del motor
             }
             break;
 
         case 2: // Estado de espera del motor
-            if (flag_timerMotor == ON) {
-                valvDesagote.Set(ON); // Activar válvula de vaciado
-                estadoValvulas = 3; // Pasar al estado de vaciado
+            if (paradaEmergencia == 1) {
+                estadoValvulas = 0;
+                CerrarTodasValvulas();
+            }
+            if ((contadorGiros == 4 && flag_lavadoRapido) || (contadorGiros == 6 && flag_lavadoCompleto)) {
+                valvDesagote.Set(ON); // Activar válvula de descarga
+                timerValvulas.Start(10000, 0, finalizarTimerValvulas);
+                estadoValvulas = 3; // Pasar al estado de descarga
             }
             break;
 
-        case 3: // Estado de vaciado
-            if (waterSensor.isEmpty()) { // Si el nivel está vacío
-                valvDesagote.Set(OFF); // Cerrar válvula de vaciado
-                if (flag_lavadoCompleto == ON) {
-                    valvSuavizante.Set(ON); // Activar válvula de suavizante
-                    estadoValvulas = 4; // Pasar al estado de llenado de suavizante
-                } else {
-                    estadoValvulas = 0; // Reiniciar al estado inicial
-                }
+        case 3: // Estado de descarga
+            if (paradaEmergencia == 1) {
+                estadoValvulas = 0;
+                CerrarTodasValvulas();
+            }
+            if ((waterSensor.isEmpty() || flag_timerValvula == 1)) { // Nivel vacío o tiempo excedido
+                valvDesagote.Set(OFF); // Cerrar válvula de descarga
+                flag_timerValvula = 0;
+                estadoValvulas = 4; // Reiniciar al estado inicial
             }
             break;
-
-        case 4: // Estado de llenado de suavizante
-            if (waterSensor.isFull()) { // Si el nivel está lleno
-                valvSuavizante.Set(OFF); // Cerrar válvula de suavizante
-                estadoValvulas = 5; // Pasar al estado de espera del motor para vaciado final
+        case 4:
+            if (paradaEmergencia == 1) {
+                estadoValvulas = 0;
+                CerrarTodasValvulas();
             }
-            break;
-
-        case 5: // Estado de espera del motor para vaciado final
-            if (flag_timerMotor == ON) {
-                valvDesagote.Set(ON); // Activar válvula de vaciado
-                estadoValvulas = 6; // Pasar al estado de vaciado final
-            }
-            break;
-
-        case 6: // Estado de vaciado final
-            if (waterSensor.isEmpty()) { // Si el nivel está vacío
-                valvDesagote.Set(OFF); // Cerrar válvula de vaciado
+            if (contadorCiclos >= 3) { // Nivel vacío o tiempo excedido
+                CerrarTodasValvulas();
+                flag_timerValvula = 0;
+                ValvulasTerminadas = 1;
                 estadoValvulas = 0; // Reiniciar al estado inicial
+            }
+            else{
+            	valvCarga.Set(ON);
+            	timerValvulas.Start(10000, 0, finalizarTimerValvulas);
+            	estadoValvulas = 1;
             }
             break;
 
         default:
-            estadoValvulas = 0; // Estado por defecto: reiniciar al inicio
+            estadoValvulas = 0; // Por defecto se reinicia al estado inicial
             break;
     }
 }
 
+
 // Función para cerrar todas las válvulas
 void CerrarTodasValvulas(void) {
     valvCarga.Set(OFF);
-    valvSuavizante.Set(OFF);
     valvDesagote.Set(OFF);
 }
 
-
+void finalizarTimerValvulas(void){
+	flag_timerValvula = 1;
+}
 
 // ==========================
 //  Máquina de Estados - Motor
@@ -181,6 +196,7 @@ void MdE_Motor(void) {
             contadorGiros = 0;
             contadorCiclos = 0;
             flag_lavadoCompleto = flag_lavadoRapido = flag_soloCentrifugado = 0;
+            MotorTerminado = 1;
             estadoMotor = INICIO;
             break;
     }
